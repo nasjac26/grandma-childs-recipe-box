@@ -1,5 +1,5 @@
 class DishesController < ApplicationController
-rescue_from ActiveRecord::RecordNotFound, with :render_not_found_response
+rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
   def index
     #combined to one line since we dont need it stored as a variable
     render json: Dish.all
@@ -7,21 +7,26 @@ rescue_from ActiveRecord::RecordNotFound, with :render_not_found_response
   end
 
   def show
-    dish = Dish.find_by(id: params[:id])
+    dish = find_dish
     render json: dish
 
   end
 
-  def create
-    Dish.create()
+  def create 
+    dish = Dish.create(dish_params)
+    render json: dish, status: :created
   end
 
-  def update
-    Dish.find_by()
+  def update 
+    dish = find_dish
+    dish.update(dish_params)
+    render json: dish
   end
 
-  def delete
-    Dish.find_by()
+  def destroy #NEED
+    dish = find_dish
+    dish.destroy
+    head :no_content
   end
 
   private
@@ -45,18 +50,6 @@ end
 
 
 
-# 10:45
-# def find_bird 
-#   Bird.find(id: params[:id])
-# end
-
-
-# def render_not_found_response
-#   render json: { error: "Bird not found" }, status: :not_found
-# end
-# eyes
-# heavy_check_mark
-# call_me_hand
 
 
 
